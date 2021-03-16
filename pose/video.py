@@ -1,6 +1,7 @@
 # From Python
 # It requires OpenCV installed for Python
-# python video.py --net_resolution 160x144
+# python video.pys
+#include/openpose/flag.h
 import sys
 import cv2
 import os
@@ -36,6 +37,8 @@ try:
     # Custom Params (refer to include/openpose/flags.hpp for more parameters)
     params = dict()
     params["model_folder"] = "models/"
+    params["write_json"] = "jsonOutput"
+    params["net_resolution"] = "160x144"
 
     # Add others in path?
     for i in range(0, len(args[1])):
@@ -62,8 +65,8 @@ try:
     #opWrapper.execute()
 
     datum = op.Datum()
-    cap = cv2.VideoCapture(0)
-
+    cap = cv2.VideoCapture("video/03cut.mp4")
+    
     while True:
         ret,frame = cap.read()
         if ret == False:
@@ -72,9 +75,10 @@ try:
         datum.cvInputData = img
         
         opWrapper.emplaceAndPop([datum])
-        #print(str(datum.poseKeypoints))
+        print(str(datum.poseKeypoints[0][8]))
+        #cv2.resizeWindow("frame", 160, 90);
         cv2.imshow("frame", datum.cvOutputData)
-        cv2.imshow("frame1", frame)
+        #cv2.imshow("frame1", frame)
         cv2.waitKey(1)
 
 except Exception as e:
