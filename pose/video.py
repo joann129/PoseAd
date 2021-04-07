@@ -76,8 +76,10 @@ try:
     cap = cv2.VideoCapture("video/02.mp4")
     #cap = cv2.VideoCapture(0)
     out = None
-    fw = open("point.txt",'w');
-    count = 0;
+    fw = open("point.txt",'w')
+    count = 0
+    wrong=0
+    arr = [0,1,2,3,4]
 
     
     while True:
@@ -101,20 +103,35 @@ try:
         if(str(datum.poseKeypoints) == "2.0" or str(datum.poseKeypoints) == "0.0"):
             print(count)
             continue
+        flag=0
         # print(len(datum.poseKeypoints))
         if(len(datum.poseKeypoints) == 5):
-            for i in range (5): 
-                # print(str(((int)(datum.poseKeypoints[i][0][0] / 100))))   
-                if( ( (int) ( datum.poseKeypoints[i][0][0] / 100 ) ) == 3 ):
-                    # print(count)
-                    fw.write(str(count))
-                    fw.write("\n")
-                    for j in range (25):
-                        fw.write( str( round( datum.poseKeypoints[i][j][0], 5 ) ) )
-                        fw.write(" ")
-                        fw.write( str( round( datum.poseKeypoints[i][j][1], 5 ) ) )
-                        fw.write("\n")
-                    break;
+
+            for i in range (5):
+                for j in range(4):
+                    no1=arr[j]
+                    no2=arr[j+1]
+                    if(datum.poseKeypoints[no1][8][0] > datum.poseKeypoints[no2][8][0]):
+                        tmp=arr[j]
+                        arr[j]=arr[j+1]
+                        arr[j+1]=tmp
+            mid=arr[2]
+
+            flag=1
+            fw.write(str(count))
+            fw.write("\n")
+            for i in range (25):            
+                fw.write( str( round( datum.poseKeypoints[mid][i][0], 5 ) ) )
+                fw.write(" ")
+                fw.write( str( round( datum.poseKeypoints[mid][i][1], 5 ) ) )
+                fw.write("\n")
+
+            arr = [0,1,2,3,4]
+
+        if(flag==0):
+            wrong+=1
+            # print(count)
+            print(wrong) #196
         
         if out is None:           
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
