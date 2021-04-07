@@ -1,7 +1,7 @@
 # From Python
 # It requires OpenCV installed for Python
-# python video.pys
-#include/openpose/flag.h
+# python video.py
+# include/openpose/flag.h
 import sys
 import cv2
 import os
@@ -16,12 +16,13 @@ try:
         # Windows Import
         if platform == "win32":
             # Change these variables to point to the correct folder (Release/x64 etc.)
-            sys.path.append(dir_path + '/Release');
-            os.environ['PATH']  = os.environ['PATH'] + ';' + dir_path + '/Release;' +  dir_path + '/bin;'
+            sys.path.append(dir_path + '/Release')
+            os.environ['PATH'] = os.environ['PATH'] + ';' + \
+                dir_path + '/Release;' + dir_path + '/bin;'
             import pyopenpose as op
         else:
             # Change these variables to point to the correct folder (Release/x64 etc.)
-            sys.path.append('../../python');
+            sys.path.append('../../python')
             # If you run `make install` (default path is `/usr/local/python` for Ubuntu), you can also access the OpenPose/python module from there. This will install OpenPose and the python library at your desired installation path. Ensure that this is in your python path in order to use it.
             # sys.path.append('/usr/local/python')
             from openpose import pyopenpose as op
@@ -31,55 +32,108 @@ try:
 
     # Flags
     parser = argparse.ArgumentParser()
-    parser.add_argument("--image_path", default="../../../examples/media/COCO_val2014_000000000192.jpg", help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
+    parser.add_argument("--image_path", default="../../../examples/media/COCO_val2014_000000000192.jpg",
+                        help="Process an image. Read all standard formats (jpg, png, bmp, etc.).")
     args = parser.parse_known_args()
 
     # Custom Params (refer to include/openpose/flags.hpp for more parameters)
     params = dict()
     params["model_folder"] = "models/"
     params["write_json"] = "jsonOutput"
-    params["net_resolution"] = "160x144"
+    #params["net_resolution"] = "160x144"
+    #params["net_resolution"] = "256x144"
+    params["net_resolution"] = "256x320"
 
     # Add others in path?
     for i in range(0, len(args[1])):
         curr_item = args[1][i]
-        if i != len(args[1])-1: next_item = args[1][i+1]
-        else: next_item = "1"
+        if i != len(args[1])-1:
+            next_item = args[1][i+1]
+        else:
+            next_item = "1"
         if "--" in curr_item and "--" in next_item:
-            key = curr_item.replace('-','')
-            if key not in params:  params[key] = "1"
+            key = curr_item.replace('-', '')
+            if key not in params:
+                params[key] = "1"
         elif "--" in curr_item and "--" not in next_item:
-            key = curr_item.replace('-','')
-            if key not in params: params[key] = next_item
+            key = curr_item.replace('-', '')
+            if key not in params:
+                params[key] = next_item
 
     # Construct it from system arguments
     # op.init_argv(args[1])
     # oppython = op.OpenposePython()
 
     # Starting OpenPose
-    
+
     #opWrapper = op.WrapperPython(op.ThreadManagerMode.Synchronous)
     opWrapper = op.WrapperPython()
     opWrapper.configure(params)
     opWrapper.start()
-    #opWrapper.execute()
+    # opWrapper.execute()
 
     datum = op.Datum()
-    cap = cv2.VideoCapture("video/03cut.mp4")
+    cap = cv2.VideoCapture("video/02.mp4")
+    #cap = cv2.VideoCapture(0)
+    out = None
+    fw = open("point.txt",'w');
+    count = 0;
+
     
     while True:
-        ret,frame = cap.read()
+        ret, frame = cap.read()
         if ret == False:
-            print("erro")
+            print("error")
+        count += 1
         img = frame
         datum.cvInputData = img
-        
+
         opWrapper.emplaceAndPop([datum])
-        print(str(datum.poseKeypoints[0][8]))
+
+        #if datum.poseKeypoints.any() == False : print("is empty")
+        # print(datum.poseKeypoints.dtype)
+        # print(str(datum.poseKeypoints[0][0]))
         #cv2.resizeWindow("frame", 160, 90);
-        cv2.imshow("frame", datum.cvOutputData)
+        
+        
+        openframe = datum.cvOutputData
+        cv2.imshow("frame", openframe)
+        if(str(datum.poseKeypoints) == "2.0" or str(datum.poseKeypoints) == "0.0"):
+            print(count)
+            continue
+        # print(len(datum.poseKeypoints))
+        if(len(datum.poseKeypoints) == 5):
+            for i in range (5): 
+                # print(str(((int)(datum.poseKeypoints[i][0][0] / 100))))   
+                if( ( (int) ( datum.poseKeypoints[i][0][0] / 100 ) ) == 3 ):
+                    # print(count)
+                    fw.write(str(count))
+                    fw.write("\n")
+                    for j in range (25):
+                        fw.write( str( round( datum.poseKeypoints[i][j][0], 5 ) ) )
+                        fw.write(" ")
+                        fw.write( str( round( datum.poseKeypoints[i][j][1], 5 ) ) )
+                        fw.write("\n")
+                    break;
+        
+        if out is None:           
+            fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+            out = cv2.VideoWriter('output.avi', fourcc, 30, (frame.shape[1], frame.shape[0]))
+            #print(frame.shape[1], frame.shape[0]) #640*360
+        
+        out.write(openframe)
+
         #cv2.imshow("frame1", frame)
-        cv2.waitKey(1)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+        
+
+    # Release
+    fw.close()
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
 
 except Exception as e:
     print(e)
