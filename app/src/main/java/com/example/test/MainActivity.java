@@ -15,6 +15,7 @@ import android.graphics.Point;
 import android.media.Image;
 import android.os.Bundle;
 import android.hardware.Camera;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
@@ -40,7 +41,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     //static String serverIp = login.serverIp;
     //static int serverPort = 5050;
     static String act = "";
-
+    static String file_intent = "";
+    File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     SurfaceView mySurfaceView;
     Camera myCamera;
     SurfaceHolder holder;
@@ -52,22 +54,34 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             try {
+                Log.e("jpeg","in");
                 Bitmap bm = BitmapFactory.decodeByteArray(data, 0,
                         data.length);
-                //File file = new File(filePath);
-                //BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                File file = new File(filePath,"catch.jpg");
+                file_intent = filePath+"/"+file.getName();
+                Log.e("catch","in");
+                //FileOutputStream bos = new FileOutputStream(file);
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                Log.e("catch","in");
                 Matrix matrix = new Matrix();
                 matrix.reset();
                 matrix.postRotate(90);
                 Bitmap bMapRotate = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
                 bm = bMapRotate;
 
-                if (act.equals("0") || act.equals("5")) {
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, bos); // 將圖片壓縮到流中
+                bos.flush(); // 輸出
+                bos.close(); // 關閉
+                intent.setClass(MainActivity.this, SecondView.class);
+               // intent = new Intent(MainActivity.this,SecondView.class);
+                Log.e("intent","in");
+                /*if (act.equals("0")||act.equals("5") ) {
                     //intent.setClass(MainActivity.this, ThirdView.class);
                 }
                 else {
                     intent.setClass(MainActivity.this, SecondView.class);
-                }
+                    Log.e("intent","in");
+                }*/
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,6 +175,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                     icon.setImageResource(icons[2]);
                     break;
                 default:
+                    break;
             }
             return convertView;
         }
@@ -188,7 +203,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         params.setPictureSize(640, 480);
 
         myCamera.setParameters(params);
+
         myCamera.startPreview();
+
     }
     @Override
     public void surfaceDestroyed( SurfaceHolder holder) {
@@ -210,6 +227,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 params.setPictureSize(640, 480);
 
                 myCamera.setParameters(params);
+                Log.e("afcb","in");
                 myCamera.takePicture(null, null, jpeg);
             }
         }
@@ -235,11 +253,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 case DragEvent.ACTION_DRAG_EXITED:
                     break;
                 case DragEvent.ACTION_DROP:
+
                     Display display = getWindowManager().getDefaultDisplay();
                     Point size = new Point();
                     display.getSize(size);
 
-                    myCamera.autoFocus(afcb);
                     isClicked = true;
 
                     int width = size.x;
@@ -253,6 +271,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                     bundle.putString("dcy", Integer.toString(dcy));
                     intent.putExtras(bundle);
 
+                    myCamera.autoFocus(afcb);
                 case DragEvent.ACTION_DRAG_ENDED:
                     break;
 
