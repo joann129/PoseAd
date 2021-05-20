@@ -8,6 +8,23 @@ import os
 from sys import platform
 import argparse
 import numpy as np
+import math
+
+
+def calAngle(p1, p2, p3):
+    if p1[0] == 0 or p1[1] == 0 or p2[0] == 0 or p2[1] == 0 or p3[0] == 0 or p3[1] == 0:
+        
+        return -1
+
+    vector1 = [p2[0]-p1[0], p2[1]-p1[1]]
+    vector2 = [p3[0]-p2[0], p3[1]-p2[1]]
+    angle = math.atan2(vector2[1], vector2[0]) - \
+        math.atan2(vector1[1], vector1[0])
+    angle = angle/math.pi*180  # change arc to degree
+    if angle < 0:
+        angle = angle + 360
+    return angle
+
 
 try:
     # Import Openpose (Windows/Ubuntu/OSX)
@@ -73,15 +90,14 @@ try:
     # opWrapper.execute()
 
     datum = op.Datum()
-    cap = cv2.VideoCapture("video/02.mp4")
-    #cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("video/twice_L1.mp4")
+    # cap = cv2.VideoCapture(0)
     out = None
-    fw = open("point.txt",'w')
+    fw = open("point/point.txt", 'w')
     count = 0
-    wrong=0
-    arr = [0,1,2,3,4]
+    mid=0
+    flag=0
 
-    
     while True:
         ret, frame = cap.read()
         if ret == False:
@@ -96,55 +112,113 @@ try:
         # print(datum.poseKeypoints.dtype)
         # print(str(datum.poseKeypoints[0][0]))
         #cv2.resizeWindow("frame", 160, 90);
-        
-        
+
+        x = datum.poseKeypoints[mid][0][0]
+        y = datum.poseKeypoints[mid][0][1]
+        people = len(datum.poseKeypoints)
         openframe = datum.cvOutputData
+        cv2.putText(openframe, str(count), (30,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 3, cv2.LINE_AA)
+        cv2.putText(openframe, str(people), (60,60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 3, cv2.LINE_AA)
         cv2.imshow("frame", openframe)
         if(str(datum.poseKeypoints) == "2.0" or str(datum.poseKeypoints) == "0.0"):
-            print(count)
             continue
-        flag=0
-        # print(len(datum.poseKeypoints))
-        if(len(datum.poseKeypoints) == 5):
 
-            for i in range (5):
-                for j in range(4):
-                    no1=arr[j]
-                    no2=arr[j+1]
-                    if(datum.poseKeypoints[no1][8][0] > datum.poseKeypoints[no2][8][0]):
-                        tmp=arr[j]
-                        arr[j]=arr[j+1]
-                        arr[j+1]=tmp
-            mid=arr[2]
+        if people > 1:
+            for i in range(0,people):
+                for j in range(0,18):
+                    if(datum.poseKeypoints[i][j][0]==0.0 or datum.poseKeypoints[i][j][1]==0.0):
+                        flag=1
+                        break;
+                if(flag==0):
+                    mid = i
+                    break
+                else:
+                    flag=0
 
-            flag=1
-            fw.write(str(count))
-            fw.write("\n")
-            for i in range (25):            
-                fw.write( str( round( datum.poseKeypoints[mid][i][0], 5 ) ) )
-                fw.write(" ")
-                fw.write( str( round( datum.poseKeypoints[mid][i][1], 5 ) ) )
-                fw.write("\n")
 
-            arr = [0,1,2,3,4]
+        fw.write(str(count))
+        fw.write("\n")
+        # just point
+        # for i in range (25):
+        #     fw.write( str( round( datum.poseKeypoints[mid][i][0], 5 ) ) )
+        #     fw.write(" ")
+        #     fw.write( str( round( datum.poseKeypoints[mid][i][1], 5 ) ) )
+        #     fw.write("\n")
 
-        if(flag==0):
-            wrong+=1
-            # print(count)
-            print(wrong) #196
-        
-        if out is None:           
+        # write 28 times
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][16], datum.poseKeypoints[mid][0], datum.poseKeypoints[mid][15] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][15], datum.poseKeypoints[mid][0], datum.poseKeypoints[mid][1] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][0], datum.poseK    eypoints[mid][16] ) ) )
+        # fw.write("\n")
+
+        fw.write(str(calAngle(datum.poseKeypoints[mid][0], datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][2])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][2], datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][8])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][8], datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][5])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][5], datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][0])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][2], datum.poseKeypoints[mid][3])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][2], datum.poseKeypoints[mid][3], datum.poseKeypoints[mid][4])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][5], datum.poseKeypoints[mid][6])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][7], datum.poseKeypoints[mid][6], datum.poseKeypoints[mid][5])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][1], datum.poseKeypoints[mid][8], datum.poseKeypoints[mid][9])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][12], datum.poseKeypoints[mid][8], datum.poseKeypoints[mid][1])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][9], datum.poseKeypoints[mid][8], datum.poseKeypoints[mid][12])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][10], datum.poseKeypoints[mid][9], datum.poseKeypoints[mid][8])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][9], datum.poseKeypoints[mid][10], datum.poseKeypoints[mid][11])))
+        fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][10], datum.poseKeypoints[mid][11], datum.poseKeypoints[mid][22] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][22], datum.poseKeypoints[mid][11], datum.poseKeypoints[mid][24] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][24], datum.poseKeypoints[mid][11], datum.poseKeypoints[mid][10] ) ) )
+        # fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][8], datum.poseKeypoints[mid][12], datum.poseKeypoints[mid][13])))
+        fw.write("\n")
+        fw.write(str(calAngle(datum.poseKeypoints[mid][14], datum.poseKeypoints[mid][13], datum.poseKeypoints[mid][12])))
+        fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][19], datum.poseKeypoints[mid][14], datum.poseKeypoints[mid][13] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][21], datum.poseKeypoints[mid][14], datum.poseKeypoints[mid][19] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][13], datum.poseKeypoints[mid][14], datum.poseKeypoints[mid][21] ) ) )
+        # fw.write("\n")
+
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][17], datum.poseKeypoints[mid][15], datum.poseKeypoints[mid][0] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][0], datum.poseKeypoints[mid][16], datum.poseKeypoints[mid][18] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][20], datum.poseKeypoints[mid][19], datum.poseKeypoints[mid][14] ) ) )
+        # fw.write("\n")
+        # fw.write( str( calAngle( datum.poseKeypoints[mid][11], datum.poseKeypoints[mid][22], datum.poseKeypoints[mid][23] ) ) )
+        # fw.write("\n")
+
+        if out is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
             out = cv2.VideoWriter('output.avi', fourcc, 30, (frame.shape[1], frame.shape[0]))
-            #print(frame.shape[1], frame.shape[0]) #640*360
-        
+            # print(frame.shape[1], frame.shape[0]) #640*360
+
         out.write(openframe)
 
         #cv2.imshow("frame1", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            fw.close()
+            cap.release()
+            out.release()
+            cv2.destroyAllWindows()
             break
-
-        
 
     # Release
     fw.close()
