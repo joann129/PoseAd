@@ -38,8 +38,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
-    //static String serverIp = login.serverIp;
-    //static int serverPort = 5050;
+    static String serverIp ="192.168.0.104";
+    static int serverPort = 5555;
     static String act = "";
     static String file_intent = "";
     File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 bos.flush(); // 輸出
                 bos.close(); // 關閉
                 intent.setClass(MainActivity.this, SecondView.class);
-               // intent = new Intent(MainActivity.this,SecondView.class);
+
                 Log.e("intent","in");
                 /*if (act.equals("0")||act.equals("5") ) {
                     //intent.setClass(MainActivity.this, ThirdView.class);
@@ -232,6 +232,23 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             }
         }
     };
+    Camera.AutoFocusCallback auto = new Camera.AutoFocusCallback(){
+
+        @Override
+        public void onAutoFocus(boolean success, Camera camera) {
+            if (success) {
+                // 設置參數,並拍照
+                Camera.Parameters params = myCamera.getParameters();
+                params.setPictureFormat(PixelFormat.JPEG);
+
+                params.setPreviewSize(640, 480);
+
+                params.setPictureSize(640, 480);
+
+                myCamera.setParameters(params);
+            }
+        }
+    };
     private class myDragEventListener implements View.OnDragListener{
         public int dcx = 0, dcy = 0;
         public int picWidth = 480;
@@ -241,6 +258,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             final int action = event.getAction();
             switch (action){
                 case DragEvent.ACTION_DRAG_STARTED:
+                    //myCamera.autoFocus(auto);
                     // Determines if this View can accept the dragged data
                     if (event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                         return (true);

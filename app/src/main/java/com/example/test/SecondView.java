@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,7 +62,7 @@ public class SecondView extends Activity{
         super.onCreate(savedInstanceState);
 
 
-        recognize(icon);
+        //recognize(icon);
         setContentView(new FaceView(this));
         //recognize(icon);
 
@@ -86,8 +87,9 @@ public class SecondView extends Activity{
 
             myBitmap = BitmapFactory.decodeFile(filename,BFO);
 
+
             imageHeight = myBitmap.getHeight();
-            imageWidth = myBitmap.getHeight();
+            imageWidth = myBitmap.getWidth();
             myFaceDetect = new FaceDetector(imageWidth,imageHeight,numberOfFace);
 
             myFace = new FaceDetector.Face[numberOfFace];
@@ -98,8 +100,9 @@ public class SecondView extends Activity{
 
             idcx = Integer.parseInt(dcx);
             idcy = Integer.parseInt(dcy);
-
-            numberOfFaceDetected = myFaceDetect.findFaces(myBitmap,myFace);
+            Log.e("height", String.valueOf(imageHeight));
+            Log.e("width", String.valueOf(imageWidth));
+            numberOfFaceDetected = myFaceDetect.findFaces(myBitmap,myFace);/*格式無法初始化*/
             Log.e("de","in");
             if(numberOfFaceDetected == 0){  //偵測人臉失敗
                 AlertDialog.Builder detectDialog = new AlertDialog.Builder(SecondView.this);
@@ -149,7 +152,7 @@ public class SecondView extends Activity{
                         e.printStackTrace();
                     }
                     Intent intent = new Intent();
-                    intent.setClass(SecondView.this, MainActivity.class);
+                    intent.setClass(SecondView.this, SendToServer.class);
                     startActivity(intent);
                     SecondView.this.finish();
 
