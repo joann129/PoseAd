@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,15 +20,17 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.Socket;
 
 
 public class SendToServer extends Activity {
+    File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     static String type = "";
     String bufRecv = "";
-    String filename = MainActivity.file_intent;
+    String filename = filePath+"/captureFix.jpg";
     String result = "";
 
     Socket clientSocket;
@@ -58,32 +61,33 @@ public class SendToServer extends Activity {
                         try {
                             byte[] buffer = new byte[2048];
                             int bytesRead;
-
                             //將圖像傳至PC
                             DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());//輸出
                             RandomAccessFile fileOutStream = new RandomAccessFile(filename, "r");
                             fileOutStream.seek(0);
+
+                            String bufSend = "face\n";
                             Log.e("transfer:","in");
-                            String bufSend = "face";
                             String size = fileOutStream.length() + "\n";
-                            dout.writeUTF(bufSend);
-                            dout.flush();
-                            dout.close();
+
+                            dout.writeUTF(bufSend);//將字串傳入server
+
+                            Thread.sleep(1000);
                             //clientSocket.getOutputStream().write(bufSend.getBytes());//類別
                             Log.e("send","buf");
                             clientSocket.getOutputStream().write(size.getBytes());//大小
 
                             Thread.sleep(1000);
-
-                            if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
-                                Log.e("[Progress]", "* Start sending file *");
-                                while ((bytesRead = fileOutStream.read(buffer)) != -1) {
-                                    clientSocket.getOutputStream().write(buffer, 0, bytesRead);
-                                }
-                                Log.e("[Progress]", "* Send completion *");
-                                fileOutStream.close();
-                                bufRecv = "";
-                            }
+                            dout.flush();
+//                            if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
+//                                Log.e("[Progress]", "* Start sending file *");
+//                                while ((bytesRead = fileOutStream.read(buffer)) != -1) {
+//                                    clientSocket.getOutputStream().write(buffer, 0, bytesRead);
+//                                }
+//                                Log.e("[Progress]", "* Send completion *");
+//                                fileOutStream.close();
+//                                bufRecv = "";
+//                            }
                         } catch (IOException ioe) {
                             Log.e("[Exception]", "IOException");
                             ioe.printStackTrace();
