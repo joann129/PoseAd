@@ -5,22 +5,18 @@ from sys import platform
 import argparse
 import numpy as np
 import math
-# import pylint
-import time
+import pylint
+from datetime import datetime
 import subprocess
 
-diff = 728 + 97*4  #容錯綠#2
-# scoreDiff = 114.75 #分數容錯
-scoreDiff = 154 #分數容錯 (+10)#2
-totalCount = 765*15 + 765*8
+diff = 728  #容錯綠
+scoreDiff = 114.75 #分數容錯
+totalCount = 765*15
 
 start = 73.66   #肩膀開始的角度
 start1 = 347.2  #手腕開始的角度
 angle = 45      #角度正常範圍
 startcheck = 0       #開始了沒
-
-stop=0    #程式停止
-delay=1/6
 
 
 def calAngle(p1, p2, p3):
@@ -39,7 +35,6 @@ def calAngle(p1, p2, p3):
 try:
     # Import Openpose (Windows/Ubuntu/OSX)
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(dir_path)
     try:
         # Windows Import
         if platform == "win32":
@@ -78,7 +73,7 @@ try:
 
     datum = op.Datum()
     cap = cv2.VideoCapture(0);
-    fr = open("point/pointTwticeL1_6fps.txt",'r')
+    fr = open("point/pointTwticeL1_7fps.txt",'r')
     count = 0   #第幾幀數
     flag=0  #符合每個點的xy都不為0(128-138行)
     arr = [0]*15 #15個角度，每個角度由三個關節點算出
@@ -86,13 +81,15 @@ try:
     badcheck=0  #是否錯誤
     out=None    #影片輸出
 
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print("Current Time =", current_time)  
+
     while True:
         ret, frame = cap.read() #640x480
         if ret == False:
             print("error")
             break
-
-        startTime = time.time()
 
         img = frame
         datum.cvInputData = img
@@ -173,11 +170,13 @@ try:
 
             #計算扣幾分
             if badcheck:
-                if i==5 or i==7 or i==4 or i==6:
-                    bad += 10;
-                bad += 5
-                badcheck = 0
-                # print(count,i)
+                countdiv = count % 7
+                if(countdiv == 2 or countdiv == 6):
+                    bad += 5
+                else:
+                    bad += 4
+                badcheck = 0;
+                print(count,i)
                 cv2.putText(openframe, "bad", (datum.poseKeypoints[0][keyMid][0],datum.poseKeypoints[0][keyMid][1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 3, cv2.LINE_AA)
                     
         #輸出幀數, 人數, 畫面
@@ -187,28 +186,23 @@ try:
         #輸出影片
         if out is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-            out = cv2.VideoWriter('output.avi', fourcc, 6, (frame.shape[1], frame.shape[0]))
+            out = cv2.VideoWriter('output.avi', fourcc, 7, (frame.shape[1], frame.shape[0]))
             # print(frame.shape[1], frame.shape[0]) #640*360
 
         out.write(openframe)
 
-        while((time.time() - startTime) < delay):
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                stop+=1;
-                break
-
         #釋放資源
-        if stop or count == 153:
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     print(bad-diff);
-    if bad-diff < 0:
-        print("0")
-    else:
-        score = (totalCount-bad+diff)/scoreDiff
-        print(50+(score-80)*2.5);
+    print((totalCount-bad+diff)/scoreDiff);
 
-    fr.close()
+    # Release
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print("Current Time =", current_time)
+
     cap.release()
     out.release()
     cv2.destroyAllWindows()
@@ -217,13 +211,8 @@ except Exception as e:
     print(e)
 
     print(bad-diff);
-    if bad-diff < 0:
-        print("0")
-    else:
-        score = (totalCount-bad+diff)/scoreDiff
-        print(50+(score-80)*2.5);
-    fr.close()
+    score = (totalCount-bad+diff)/scoreDiff
+    print(50+(score-80)*2.5);
     cap.rlease()
-    out.release()
     cv2.destroyAllWindows()
     sys.exit(-1)
