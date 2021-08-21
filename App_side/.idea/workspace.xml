@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5d423f71-2290-4431-a48d-b07402b25c0d" name="Default Changelist" comment="test">
+      <change beforePath="$PROJECT_DIR$/../app/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/User.4.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/d.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.1.8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.2.6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.3.7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.4.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.4.2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.4.3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/data/User.4.4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/dlib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/dlib_face_recognition_resnet_model_v1.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/face_recognizer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/face_train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/haarcascade_frontalface_default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/local.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/pic/User.1.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/pic/User.2.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/pic/User.3.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/pic/User.4.1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/pic_2_sucess22.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/rec.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/recognizer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/server.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/shape_predictor_68_face_landmarks.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/androidTest/java/com/example/myapplication/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/androidTest/java/com/example/test/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/FaceView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/FinalView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/SecondView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/SendToServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/test/login.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/drawable/icon_info.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/drawable/icon_photo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/drawable/icon_ticket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/activity_final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/gallery.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/login.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/passtxt.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/values-night/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/test/java/com/example/myapplication/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/test/java/com/example/test/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/trainner/trainner.yml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="layoutResourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1qqRQXoR721GqncL6xvPScZAWIl" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="JBAXB765R4933MD" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2021-08-09T12:15:26.028Z" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/java" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+  </component>
+  <component name="RecentsManager">
+    <key name="android.template.-1630723630">
+      <recent name="com.example.test" />
+    </key>
+    <key name="android.template.-1395181552">
+      <recent name="com.example.test" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\a0976\AndroidStudioProjects\test\app\src\main\res\drawable-v24" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="My_Application.app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5d423f71-2290-4431-a48d-b07402b25c0d" name="Default Changelist" comment="" />
+      <created>1617805117404</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1617805117404</updated>
+    </task>
+    <task id="LOCAL-00001" summary="test">
+      <created>1618468137975</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1618468137975</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="395" y="90" key="#Inspections" timestamp="1627483177056">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="395" y="90" key="#Inspections/0.0.1536.824@0.0.1536.824" timestamp="1627483177056" />
+    <state x="286" y="158" key="#PSD" timestamp="1629379349642">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="286" y="158" key="#PSD/0.0.1536.824@0.0.1536.824" timestamp="1629379349642" />
+    <state x="93" y="93" width="1350" height="638" key="AVDManager" timestamp="1622704267578">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="93" y="93" width="1350" height="638" key="AVDManager/0.0.1536.824@0.0.1536.824" timestamp="1622704267578" />
+    <state x="680" y="178" key="AndroidCreateResourceFileDialog" timestamp="1627483285792">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="680" y="178" key="AndroidCreateResourceFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1627483285792" />
+    <state x="536" y="235" key="FileChooserDialogImpl" timestamp="1629536965741">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="536" y="235" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1629536965741" />
+    <state width="1478" height="169" key="GridCell.Tab.0.bottom" timestamp="1629376257653">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="169" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1629376257653" />
+    <state width="1478" height="169" key="GridCell.Tab.0.center" timestamp="1629376257653">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="169" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1629376257653" />
+    <state width="1478" height="169" key="GridCell.Tab.0.left" timestamp="1629376257652">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="169" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1629376257652" />
+    <state width="1478" height="169" key="GridCell.Tab.0.right" timestamp="1629376257653">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1478" height="169" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1629376257653" />
+    <state x="270" y="56" key="SettingsEditor" timestamp="1629536456239">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="270" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1629536456239" />
+  </component>
+</project>
