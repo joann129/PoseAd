@@ -1,13 +1,19 @@
 package com.example.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.Log;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -20,6 +26,8 @@ public class ThirdView extends Activity {
     String type = SendToServer.type;
     String bufsend = "";
     Socket clientSocket;
+    String bufRecv = "";
+    String result = "";
 
     int hLoad,hSize;
 
@@ -27,6 +35,13 @@ public class ThirdView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.e("<PAGE>", "ThirdView");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_final);
+        if (Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Thread t = new Thread(readData);
+        t.start();
         switch(icon){
             case "0":
                 bufsend = "info";
@@ -38,16 +53,42 @@ public class ThirdView extends Activity {
                 bufsend = "photo";
                 break;
             case "3":
-                bufsend = "txt";
+                bufsend = "game";
                 break;
         }
         if(icon.equals("0")){
 //            info
         }else if(icon.equals("3")){
+//            AlertDialog.Builder showCapture = new AlertDialog.Builder(this);
+//            showCapture.setTitle("GAME");
+//            showCapture.setPositiveButton("Start!",new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    if(clientSocket.isConnected()){
+//
+//                        Log.e("send","execute");
+//                        try {
+//                            DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());
+//                            dout.writeUTF("2");
+//                            dout.writeUTF("game1;");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                }
+//            });
+//            showCapture.show();
             Intent intent = new Intent();
-            intent.setClass(ThirdView.this,MainActivity.class);//txt
+            intent.setClass(ThirdView.this,GameView.class);
             startActivity(intent);
+
+
         }
+//            Intent intent = new Intent();
+//            intent.setClass(ThirdView.this,MainActivity.class);//txt
+//            startActivity(intent);
+//        }
 
     }
     private Handler handler = new Handler() {
@@ -89,9 +130,19 @@ public class ThirdView extends Activity {
             try{
                 InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
                 clientSocket = new Socket(serverIp, MainActivity.serverPort);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                Log.e("read","in");
+                bufRecv = br.readUTF();
+                Log.e("[Buffread]",bufRecv);
+
+                if(bufRecv != null && !bufRecv.equals("StartSend")){
+                    result = bufRecv;
+                    Log.e("[result]:",result);
+                    Message mes = handler.obtainMessage();
+                    mes.what = 1;
+                    handler.sendMessage(mes);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
