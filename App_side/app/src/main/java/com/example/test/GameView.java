@@ -23,11 +23,12 @@ public class GameView extends AppCompatActivity {
     private View view1;
     private View view2;
     private View view3;
+    private View view0;
 
     //用來存放view並傳遞給viewPager的介面卡。
     private ArrayList<View> pageview;
 
-    private ImageView[] tips = new ImageView[3];
+    private ImageView[] tips = new ImageView[4];
 
     private ImageView imageView;
     private ViewGroup group;
@@ -38,10 +39,12 @@ public class GameView extends AppCompatActivity {
 
 
         viewPager = (ViewPager)findViewById(R.id.viewPager);
+        view0 = getLayoutInflater().inflate(R.layout.game_view0,null);
         view1 = getLayoutInflater().inflate(R.layout.game_view1,null);
         view2 = getLayoutInflater().inflate(R.layout.game_view2,null);
         view3 = getLayoutInflater().inflate(R.layout.game_view3,null);
         pageview = new ArrayList<View>();
+        pageview.add(view0);
         pageview.add(view1);
         pageview.add(view2);
         pageview.add(view3);

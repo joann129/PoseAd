@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="285dp"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="102dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="82dp"
+        android:text="遊戲說明"
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="443dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_alignStart="@+id/title"
+        android:layout_alignEnd="@+id/title"
+        android:layout_marginStart="-81dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginEnd="-76dp"
+        android:text=" 使用肢體玩剪刀石頭布!\n
+點選遊戲開始後請站到畫面正中央\n
+在倒數5秒結束前擺好動作\n
+勝利可以獲得精美小禮品喔
+"
+        android:textSize="20dp" />
+
+
+</RelativeLayout >
