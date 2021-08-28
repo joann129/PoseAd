@@ -44,7 +44,7 @@ public class SendToServer extends Activity {
     Socket clientSocket;
     Socket picSocket;
     ProgressDialog progressDialog;
-
+    String Serial;
     protected void onCreate(Bundle savedInstanceState) {
         Log.e("page:","SendToServer");
         super.onCreate(savedInstanceState);
@@ -94,10 +94,11 @@ public class SendToServer extends Activity {
                             RandomAccessFile fileOutStream = new RandomAccessFile(filename, "r");
                             fileOutStream.seek(0);
                             dout.writeUTF("2");
+                            Thread.sleep(1500);
 //                            dout.writeUTF("game1;");
 //                            Log.e("no","face");
-                            String bufSend = "facer:";
-                            Log.e("transfer:","in");
+                            String bufSend = "facer;";
+                            Log.e("transfer","in");
 //                            String size = fileOutStream.length() + "\n";
                             dout.writeUTF(bufSend);//將字串傳入server
                             Log.e("send",bufSend);
@@ -105,7 +106,7 @@ public class SendToServer extends Activity {
                             //clientSocket.getOutputStream().write(bufSend.getBytes());//類別
                             Log.e("send","buf");
                             //clientSocket.getOutputStream().write(size.getBytes());//大小
-                            Thread.sleep(1000);
+                            //Thread.sleep(1000);
 
 
 
@@ -113,24 +114,30 @@ public class SendToServer extends Activity {
                                 Log.e("[Progress]", "* Start sending file *");
                                 DataOutputStream dpos = new DataOutputStream(pos);
                                 dpos.writeUTF("3");
+                                Log.e("serial",Serial);
                                 while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
                                     baos.write(buffer, 0, bytesRead);
                                 }
                                 baos.flush();
                                 Log.e("傳送圖片","開始");
                                 PrintWriter pw = new PrintWriter(pos);
+                                pos.flush();
                                 pw.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
                                 pw.flush();
-
+                                pw.close();
+                                dpos.close();
+                                Thread.sleep(500);
                                 Log.e("[Progress]", "* Send completion *");
+                                dout.writeUTF("imgover");
+                                Log.e("over","img");
 //                                os.close();
 //                                fis.close();
 //                                pw.close();
-                                fileOutStream.close();
+                                //fileOutStream.close();
 //                                baos.close();
 
                                 bufRecv = "";
-                                picSocket.close();
+                                //picSocket.close();
                             }
                         } catch (IOException | InterruptedException ioe) {
                             Log.e("[Exception]", "IOException");
@@ -215,15 +222,17 @@ public class SendToServer extends Activity {
                     Log.e("read","in");
                     bufRecv = br.readUTF();
                     Log.e("[Buffread]",bufRecv);
-
-                    if(bufRecv != null && !bufRecv.equals("StartSend")){
+                    String[] token = bufRecv.split(";");
+                    if(bufRecv != null && !bufRecv.equals("StartSend") && !token[0].equals("index")){
                         result = bufRecv;
                         Log.e("[result]:",result);
                         Message mes = handler.obtainMessage();
                         mes.what = 1;
                         handler.sendMessage(mes);
                     }
-
+                    else if(token[0].equals("index")){
+                        Serial = token[1];
+                    }
                 }
                 Log.e("[Buffread]","no exit");
             } catch (IOException e) {
