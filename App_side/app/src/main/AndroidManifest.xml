@@ -30,6 +30,9 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".SecondView" />
         <activity android:name=".SendToServer" />
+        <activity android:name=".ThirdView" />
+        <activity android:name=".GameView"/>
+        <activity android:name=".passtxt"/>
 
     </application>
 

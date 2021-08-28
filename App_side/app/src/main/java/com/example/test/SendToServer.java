@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Base64;
 
 
@@ -41,8 +42,9 @@ public class SendToServer extends Activity {
     String result = "";
 
     Socket clientSocket;
+    Socket picSocket;
     ProgressDialog progressDialog;
-
+    String Serial;
     protected void onCreate(Bundle savedInstanceState) {
         Log.e("page:","SendToServer");
         super.onCreate(savedInstanceState);
@@ -50,6 +52,13 @@ public class SendToServer extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Thread t = new Thread(readData);
         t.start();  /*開始讀取server傳穿送的執行序*/
         BitmapFactory.Options BFO = new BitmapFactory.Options();
@@ -68,55 +77,71 @@ public class SendToServer extends Activity {
                 Message mes = new Message();
                 mes.what = 0;
                 handler.sendMessage(mes);
+                Log.e("handler","start");
                 if (clientSocket.isConnected()) {
                     if (new File(filename).exists()) { //當圖檔存在
                         try {
+                            InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
+                            picSocket = new Socket(serverIp, 5050);
                             byte[] buffer = new byte[1024*20];
                             FileInputStream fis = new FileInputStream(f);
                             OutputStream os = clientSocket.getOutputStream();
+                            OutputStream pos = picSocket.getOutputStream();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             int bytesRead;
                             //將圖像傳至PC
                             DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());//輸出
                             RandomAccessFile fileOutStream = new RandomAccessFile(filename, "r");
                             fileOutStream.seek(0);
-
-                            String bufSend = "face";
-                            Log.e("transfer:","in");
-                            String size = fileOutStream.length() + "\n";
+                            dout.writeUTF("2");
+                            Thread.sleep(1500);
+//                            dout.writeUTF("game1;");
+//                            Log.e("no","face");
+                            String bufSend = "facer;";
+                            Log.e("transfer","in");
+//                            String size = fileOutStream.length() + "\n";
                             dout.writeUTF(bufSend);//將字串傳入server
                             Log.e("send",bufSend);
                             Thread.sleep(1000);
                             //clientSocket.getOutputStream().write(bufSend.getBytes());//類別
                             Log.e("send","buf");
                             //clientSocket.getOutputStream().write(size.getBytes());//大小
+                            //Thread.sleep(1000);
 
-                            Thread.sleep(1000);
-                            dout.flush();
+
+
                             if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
                                 Log.e("[Progress]", "* Start sending file *");
+                                DataOutputStream dpos = new DataOutputStream(pos);
+                                dpos.writeUTF("3");
+                                Log.e("serial",Serial);
                                 while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
                                     baos.write(buffer, 0, bytesRead);
                                 }
                                 baos.flush();
-                                PrintWriter pw = new PrintWriter(os);
+                                Log.e("傳送圖片","開始");
+                                PrintWriter pw = new PrintWriter(pos);
+                                pos.flush();
                                 pw.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
                                 pw.flush();
-                                Log.e("[Progress]", "* Send completion *");
-//                                clientSocket.shutdownOutput();
-                                Thread mt = new Thread(readData);
-                                mt.start();
-                                os.close();
-                                fis.close();
                                 pw.close();
-                                fileOutStream.close();
+                                dpos.close();
+                                Thread.sleep(500);
+                                Log.e("[Progress]", "* Send completion *");
+                                dout.writeUTF("imgover");
+                                Log.e("over","img");
+//                                os.close();
+//                                fis.close();
+//                                pw.close();
+                                //fileOutStream.close();
+//                                baos.close();
+
                                 bufRecv = "";
+                                //picSocket.close();
                             }
-                        } catch (IOException ioe) {
+                        } catch (IOException | InterruptedException ioe) {
                             Log.e("[Exception]", "IOException");
                             ioe.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
                     } else {
                         Log.e("[Error]", "File doesn't exist");
@@ -183,6 +208,7 @@ public class SendToServer extends Activity {
         }
     };
    private Runnable readData = new Runnable() {
+
         @Override
         public void run() {
             try {
@@ -192,16 +218,20 @@ public class SendToServer extends Activity {
                 DataInputStream br = new DataInputStream (clientSocket.getInputStream());
 
                 while(clientSocket.isConnected()){
-
+//                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                    Log.e("read","in");
                     bufRecv = br.readUTF();
                     Log.e("[Buffread]",bufRecv);
-
-                    if(bufRecv != null && !bufRecv.equals("StartSend")){
+                    String[] token = bufRecv.split(";");
+                    if(bufRecv != null && !bufRecv.equals("StartSend") && !token[0].equals("index")){
                         result = bufRecv;
                         Log.e("[result]:",result);
                         Message mes = handler.obtainMessage();
                         mes.what = 1;
                         handler.sendMessage(mes);
+                    }
+                    else if(token[0].equals("index")){
+                        Serial = token[1];
                     }
                 }
                 Log.e("[Buffread]","no exit");

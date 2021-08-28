@@ -32,8 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
-    static String serverIp ="192.168.50.113";
-    static int serverPort = 5555;
+    static String serverIp ="192.168.50.21";
+    static int serverPort = 5050;
     static String act = "";
     static String file_intent = "";
     File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -69,13 +69,14 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 intent.setClass(MainActivity.this, SecondView.class);
 
                 Log.e("intent","in");
-                /*if (act.equals("0")||act.equals("5") ) {
-                    //intent.setClass(MainActivity.this, ThirdView.class);
+                if (act.equals("0")||act.equals("6") ) {
+                    intent.setClass(MainActivity.this, ThirdView.class);
                 }
+
                 else {
                     intent.setClass(MainActivity.this, SecondView.class);
                     Log.e("intent","in");
-                }*/
+                }
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,7 +110,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         private  int[] icons = {
                 R.drawable.icon_info,
                 R.drawable.icon_ticket,
-                R.drawable.icon_photo
+                R.drawable.icon_photo,
+                R.drawable.game_icon,
+                R.drawable.icon_chat
         };
         private Context mCoNtext;
 
@@ -167,6 +170,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                     break;
                 case 2:
                     icon.setImageResource(icons[2]);
+                    break;
+                case 3:
+                    icon.setImageResource(icons[3]);
+                    break;
+                case 4:
+                    icon.setImageResource(icons[4]);
                     break;
                 default:
                     break;
