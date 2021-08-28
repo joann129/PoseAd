@@ -42,6 +42,7 @@ public class SendToServer extends Activity {
     String result = "";
 
     Socket clientSocket;
+    Socket picSocket;
     ProgressDialog progressDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,7 @@ public class SendToServer extends Activity {
         }
 
         try {
-            InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
-            clientSocket = new Socket(serverIp, MainActivity.serverPort);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,13 +76,17 @@ public class SendToServer extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 Message mes = new Message();
                 mes.what = 0;
-//                handler.sendMessage(mes);
+                handler.sendMessage(mes);
+                Log.e("handler","start");
                 if (clientSocket.isConnected()) {
                     if (new File(filename).exists()) { //當圖檔存在
                         try {
+                            InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
+                            picSocket = new Socket(serverIp, 5050);
                             byte[] buffer = new byte[1024*20];
                             FileInputStream fis = new FileInputStream(f);
                             OutputStream os = clientSocket.getOutputStream();
+                            OutputStream pos = picSocket.getOutputStream();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             int bytesRead;
                             //將圖像傳至PC
@@ -90,45 +94,48 @@ public class SendToServer extends Activity {
                             RandomAccessFile fileOutStream = new RandomAccessFile(filename, "r");
                             fileOutStream.seek(0);
                             dout.writeUTF("2");
-                            dout.writeUTF("game1;");
-                            Log.e("no","face");
-//                            String bufSend = "face";
-//                            Log.e("transfer:","in");
+//                            dout.writeUTF("game1;");
+//                            Log.e("no","face");
+                            String bufSend = "facer:";
+                            Log.e("transfer:","in");
 //                            String size = fileOutStream.length() + "\n";
-//                            dout.writeUTF(bufSend);//將字串傳入server
-//                            Log.e("send",bufSend);
-//                            Thread.sleep(1000);
-//                            //clientSocket.getOutputStream().write(bufSend.getBytes());//類別
-//                            Log.e("send","buf");
-//                            //clientSocket.getOutputStream().write(size.getBytes());//大小
-//
-//                            Thread.sleep(1000);
-//                            dout.flush();
-//                            if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
-//                                Log.e("[Progress]", "* Start sending file *");
-//                                while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
-//                                    baos.write(buffer, 0, bytesRead);
-//                                }
-//                                baos.flush();
-//                                PrintWriter pw = new PrintWriter(os);
-//                                pw.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
-//                                pw.flush();
-//                                clientSocket.shutdownOutput();
-//                                Log.e("[Progress]", "* Send completion *");
+                            dout.writeUTF(bufSend);//將字串傳入server
+                            Log.e("send",bufSend);
+                            Thread.sleep(1000);
+                            //clientSocket.getOutputStream().write(bufSend.getBytes());//類別
+                            Log.e("send","buf");
+                            //clientSocket.getOutputStream().write(size.getBytes());//大小
+                            Thread.sleep(1000);
+
+
+
+                            if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
+                                Log.e("[Progress]", "* Start sending file *");
+                                DataOutputStream dpos = new DataOutputStream(pos);
+                                dpos.writeUTF("3");
+                                while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
+                                    baos.write(buffer, 0, bytesRead);
+                                }
+                                baos.flush();
+                                Log.e("傳送圖片","開始");
+                                PrintWriter pw = new PrintWriter(pos);
+                                pw.write(Base64.getEncoder().encodeToString(baos.toByteArray()));
+                                pw.flush();
+
+                                Log.e("[Progress]", "* Send completion *");
 //                                os.close();
 //                                fis.close();
 //                                pw.close();
-//                                fileOutStream.close();
+                                fileOutStream.close();
 //                                baos.close();
-//
-//                                bufRecv = "";
-//                            }
-                        } catch (IOException ioe) {
+
+                                bufRecv = "";
+                                picSocket.close();
+                            }
+                        } catch (IOException | InterruptedException ioe) {
                             Log.e("[Exception]", "IOException");
                             ioe.printStackTrace();
-                        } //catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
+                        }
                     } else {
                         Log.e("[Error]", "File doesn't exist");
                     }
@@ -194,15 +201,17 @@ public class SendToServer extends Activity {
         }
     };
    private Runnable readData = new Runnable() {
+
         @Override
         public void run() {
             try {
 // 手機端連線時要先傳送'2'
-
-//                DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
+                clientSocket = new Socket(serverIp, MainActivity.serverPort);
+                DataInputStream br = new DataInputStream (clientSocket.getInputStream());
 
                 while(clientSocket.isConnected()){
-                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+//                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
                     Log.e("read","in");
                     bufRecv = br.readUTF();
                     Log.e("[Buffread]",bufRecv);
@@ -214,7 +223,6 @@ public class SendToServer extends Activity {
                         mes.what = 1;
                         handler.sendMessage(mes);
                     }
-                    br = null;
 
                 }
                 Log.e("[Buffread]","no exit");
