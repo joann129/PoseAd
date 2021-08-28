@@ -177,7 +177,7 @@ public class SendToServer extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent();
-                                intent.setClass(SendToServer.this, MainActivity.class );
+                                intent.setClass(SendToServer.this, ThirdView.class );
                                 startActivity(intent);
                                 //關閉畫面
                                 SendToServer.this.finish();

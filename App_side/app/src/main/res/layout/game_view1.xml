@@ -4,29 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/sessor"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="110dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="110dp"
-        android:text="\t\t\t\t動作示範:\n
-        \t\t剪刀\n
-        雙腳交叉">
-
-    </TextView>
 
     <ImageView
         android:id="@+id/sessor"
-        android:layout_width="330dp"
-        android:layout_height="446dp"
+        android:layout_width="match_parent"
+        android:layout_height="573dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
         android:layout_marginLeft="-270dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="11dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
         android:background="@drawable/sessor" />
 
 </RelativeLayout >

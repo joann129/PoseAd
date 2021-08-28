@@ -1,10 +1,12 @@
 package com.example.test;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class GameView extends AppCompatActivity {
     private ViewPager viewPager;
@@ -24,7 +32,8 @@ public class GameView extends AppCompatActivity {
     private View view2;
     private View view3;
     private View view0;
-
+    Button startgame;
+    Socket clientSocket;
     //用來存放view並傳遞給viewPager的介面卡。
     private ArrayList<View> pageview;
 
@@ -34,15 +43,20 @@ public class GameView extends AppCompatActivity {
     private ViewGroup group;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.e("<PAGE>", "GameView");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
+        Thread t = new Thread(readData);
+        t.start();
 
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         view0 = getLayoutInflater().inflate(R.layout.game_view0,null);
         view1 = getLayoutInflater().inflate(R.layout.game_view1,null);
         view2 = getLayoutInflater().inflate(R.layout.game_view2,null);
         view3 = getLayoutInflater().inflate(R.layout.game_view3,null);
+        Log.e("btn","click");
+        startgame = (Button)view3.findViewById(R.id.startBtn);
         pageview = new ArrayList<View>();
         pageview.add(view0);
         pageview.add(view1);
@@ -69,6 +83,33 @@ public class GameView extends AppCompatActivity {
         viewPager.setAdapter(new mypagerAdapter(pageview));
         //這裡的GuiPageChangeListener是第四步定義好的。
         viewPager.addOnPageChangeListener(new GuidePageChangeListener());
+
+        startgame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clientSocket.isConnected()){
+                    try {
+                        Log.e("send","execute");
+                        DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());
+                        dout.writeUTF("2");
+                        dout.writeUTF("game1;");
+                        Log.e("game","start");
+                        Thread.sleep(2000);
+                        Intent intent = new Intent();
+                        intent.setClass(GameView.this,MainActivity.class);
+                        startActivity(intent);
+                        GameView.this.finish();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                Intent intent = new Intent();
+                intent.setClass(GameView.this,MainActivity.class);
+                startActivity(intent);
+                GameView.this.finish();
+            }
+        });
     }
 
     class GuidePageChangeListener implements ViewPager.OnPageChangeListener{
@@ -126,6 +167,32 @@ public class GameView extends AppCompatActivity {
         public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return object==view;
         }
+    }
+    private Runnable readData = new Runnable() {
+        public void run() {
+            try {
+                InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
+                clientSocket = new Socket(serverIp, MainActivity.serverPort);
+                Thread.sleep(3000);
+            }
+            catch (IOException ioe) {
+                Log.e("[Exception]", "IOException");
+                ioe.printStackTrace();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "--- ThirdView(onDestroy)  ---");
+        /*
+        Intent intent = new Intent();
+        intent.setClass(ThirdView.this, SendImage.class);
+        startActivity(intent);
+        */
+        GameView.this.finish();
     }
 }
 

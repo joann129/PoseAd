@@ -55,6 +55,11 @@ public class ThirdView extends Activity {
             case "3":
                 bufsend = "game";
                 break;
+            case "4":
+                bufsend = "txt";
+                break;
+            default:
+                break;
         }
         if(icon.equals("0")){
 //            info
@@ -83,7 +88,10 @@ public class ThirdView extends Activity {
             intent.setClass(ThirdView.this,GameView.class);
             startActivity(intent);
 
-
+        }else if(icon.equals("4")){
+            Intent intent = new Intent();
+            intent.setClass(ThirdView.this,passtxt.class);
+            startActivity(intent);
         }
 //            Intent intent = new Intent();
 //            intent.setClass(ThirdView.this,MainActivity.class);//txt
