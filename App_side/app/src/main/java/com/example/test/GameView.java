@@ -92,7 +92,7 @@ public class GameView extends AppCompatActivity {
                         Log.e("send","execute");
                         DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());
                         dout.writeUTF("2");
-                        dout.writeUTF("game1;");
+                        dout.writeUTF("game2;");
                         Log.e("game","start");
                         Thread.sleep(2000);
                         Intent intent = new Intent();

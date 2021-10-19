@@ -81,6 +81,7 @@ public class SendToServer extends Activity {
                 if (clientSocket.isConnected()) {
                     if (new File(filename).exists()) { //當圖檔存在
                         try {
+
                             InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
                             picSocket = new Socket(serverIp, 5050);
                             byte[] buffer = new byte[1024*20];
@@ -113,7 +114,7 @@ public class SendToServer extends Activity {
                             if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
                                 Log.e("[Progress]", "* Start sending file *");
                                 DataOutputStream dpos = new DataOutputStream(pos);
-                                dpos.writeUTF("3");
+                                dpos.writeUTF("3");//傳圖片
                                 Log.e("serial",Serial);
                                 while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
                                     baos.write(buffer, 0, bytesRead);
@@ -232,6 +233,9 @@ public class SendToServer extends Activity {
                     }
                     else if(token[0].equals("index")){
                         Serial = token[1];
+                        Message mes = new Message();
+                        mes.what = 0;
+                        handler.sendMessage(mes);
                     }
                 }
                 Log.e("[Buffread]","no exit");

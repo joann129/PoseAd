@@ -63,6 +63,8 @@ public class ThirdView extends Activity {
         }
         if(icon.equals("0")){
 //            info
+            Intent intent = new Intent();
+            intent.setClass(ThirdView.this,Info.class);
         }else if(icon.equals("3")){
 //            AlertDialog.Builder showCapture = new AlertDialog.Builder(this);
 //            showCapture.setTitle("GAME");
@@ -90,13 +92,9 @@ public class ThirdView extends Activity {
 
         }else if(icon.equals("4")){
             Intent intent = new Intent();
-            intent.setClass(ThirdView.this,passtxt.class);
+            intent.setClass(ThirdView.this,chat.class);
             startActivity(intent);
         }
-//            Intent intent = new Intent();
-//            intent.setClass(ThirdView.this,MainActivity.class);//txt
-//            startActivity(intent);
-//        }
 
     }
     private Handler handler = new Handler() {

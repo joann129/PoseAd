@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 intent.setClass(MainActivity.this, SecondView.class);
 
                 Log.e("intent","in");
-                if (act.equals("0")||act.equals("6") ) {
+                if (act.equals("6") ) {
                     intent.setClass(MainActivity.this, ThirdView.class);
                 }
 

@@ -1,0 +1,128 @@
+package com.example.test;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class chat extends Activity {
+    Socket clientSocket;
+    EditText chatContent;
+    Button submit;
+    Button back;
+    String bufRecv = "";
+    String content = "";
+    RecyclerView recyclerView;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.e("<PAGE>", "chat");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.passtxt);
+        chatContent = (EditText)findViewById(R.id.chatContent);
+        submit = (Button) findViewById(R.id.submit);
+        back = (Button) findViewById(R.id.back);
+        recyclerView = (RecyclerView) findViewById(R.id.recycle) ;
+
+        Thread t = new Thread(readData);
+        t.start();
+
+        submit.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if (clientSocket.isConnected()){
+                    content = chatContent.getText().toString();
+
+                    Log.e("[Chat]",  content);
+
+
+                    try {
+                        DataOutputStream dout = new DataOutputStream(clientSocket.getOutputStream());
+                        String txt = "chat;"+content+";yes";
+                        //dout.writeUTF("2");
+                        dout.writeUTF(txt);
+                        Log.e("[txt]",txt);
+//                        clientSocket.getOutputStream().write("2".getBytes());
+//                        clientSocket.getOutputStream().write(txt.getBytes());
+                        //clientSocket.getOutputStream().write(chat.getBytes());
+                        chatContent.setText("");
+
+                        AlertDialog.Builder chatSend = new AlertDialog.Builder(chat.this);
+                        chatSend.setTitle("Send");
+                        chatSend.setMessage(chatContent.getText().toString());
+                        chatSend.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                chatContent.setText("");
+                                dialog.dismiss();
+                            }
+                        });
+                        //chatSend.show();
+
+                    } catch (IOException ioe) {
+                        Log.e("[Exception]", "IOException");
+                        ioe.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(chat.this, MainActivity.class);
+                startActivity(intent);
+                //關閉畫面
+                chat.this.finish();
+            }
+        });
+    }
+    private Runnable readData = new Runnable() {
+        public void run() {
+            try {
+                InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
+                clientSocket = new Socket(serverIp, MainActivity.serverPort);
+                DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                DataOutputStream d2 = new DataOutputStream(clientSocket.getOutputStream());
+                d2.writeUTF("2");
+                while(clientSocket.isConnected()){
+//                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                    Log.e("read","in");
+                    bufRecv = br.readUTF();
+                    Log.e("[Buffread]",bufRecv);
+
+                }
+                Thread.sleep(3000);
+
+            }
+            catch (IOException ioe) {
+                Log.e("[Exception]", "IOException");
+                ioe.printStackTrace();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    public void onDestroy() {
+        super.onDestroy();
+        chat.this.finish();
+    }
+}
