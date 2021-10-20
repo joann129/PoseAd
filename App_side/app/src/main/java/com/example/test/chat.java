@@ -25,18 +25,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class chat extends Activity implements CompoundButton.OnCheckedChangeListener {
+    private List<Msg> msgList = new ArrayList<>();
     Socket clientSocket;
     EditText chatContent;
     Button submit;
     Button back;
+    String result = SendToServer.type;
     String bufRecv = "";
     String content = "";
     RecyclerView recyclerView;
     CheckBox checkBox;
     String transfer = "";
-
+    private MsgAdapter adapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("<PAGE>", "chat");
@@ -60,13 +64,18 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 
                 if (clientSocket.isConnected()){
                     content = chatContent.getText().toString();
-
+                    if(!"".equals(content)){
+                        Msg msg = new Msg(content, Msg.TYPE_SENT);
+                        msgList.add(msg);
+                        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+                        recyclerView.scrollToPosition(msgList.size()-1);//將ListView定位到最後一行
+                    }
                     Log.e("[Chat]",  content);
 
 
                     try {
                         DataOutputStream dout = new DataOutputStream(clientSocket.getOutputStream());
-                        String txt = "chat;"+content+";"+transfer;
+                        String txt = "chat;"+result+";"+content+";"+transfer;
                         //dout.writeUTF("2");
                         dout.writeUTF(txt);
                         Log.e("[txt]",txt);
@@ -120,7 +129,10 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
                     Log.e("read","in");
                     bufRecv = br.readUTF();
                     Log.e("[Buffread]",bufRecv);
-
+                    Msg revmsg = new Msg(bufRecv, Msg.TYPE_RECEIVED);
+                    msgList.add(revmsg);
+                    adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+                    recyclerView.scrollToPosition(msgList.size()-1);//將ListView定位到最後一行
                 }
                 Thread.sleep(3000);
 

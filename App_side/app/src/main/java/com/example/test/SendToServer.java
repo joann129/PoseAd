@@ -76,12 +76,12 @@ public class SendToServer extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 Message mes = new Message();
                 mes.what = 0;
-                handler.sendMessage(mes);
+
                 Log.e("handler","start");
                 if (clientSocket.isConnected()) {
                     if (new File(filename).exists()) { //當圖檔存在
                         try {
-
+                            handler.sendMessage(mes);
                             InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
                             picSocket = new Socket(serverIp, 5050);
                             byte[] buffer = new byte[1024*20];
