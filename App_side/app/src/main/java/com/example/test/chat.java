@@ -9,9 +9,15 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.DataInputStream;
@@ -20,7 +26,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class chat extends Activity {
+public class chat extends Activity implements CompoundButton.OnCheckedChangeListener {
     Socket clientSocket;
     EditText chatContent;
     Button submit;
@@ -28,6 +34,8 @@ public class chat extends Activity {
     String bufRecv = "";
     String content = "";
     RecyclerView recyclerView;
+    CheckBox checkBox;
+    String transfer = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +46,10 @@ public class chat extends Activity {
         submit = (Button) findViewById(R.id.submit);
         back = (Button) findViewById(R.id.back);
         recyclerView = (RecyclerView) findViewById(R.id.recycle) ;
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        checkBox = (CheckBox)findViewById(R.id.checkbox) ;
+        checkBox.setOnCheckedChangeListener(this);
         Thread t = new Thread(readData);
         t.start();
 
@@ -46,6 +57,7 @@ public class chat extends Activity {
 
             @Override
             public void onClick(View v) {
+
                 if (clientSocket.isConnected()){
                     content = chatContent.getText().toString();
 
@@ -54,7 +66,7 @@ public class chat extends Activity {
 
                     try {
                         DataOutputStream dout = new DataOutputStream(clientSocket.getOutputStream());
-                        String txt = "chat;"+content+";yes";
+                        String txt = "chat;"+content+";"+transfer;
                         //dout.writeUTF("2");
                         dout.writeUTF(txt);
                         Log.e("[txt]",txt);
@@ -83,6 +95,7 @@ public class chat extends Activity {
 
             }
         });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,8 +134,19 @@ public class chat extends Activity {
             }
         }
     };
+
     public void onDestroy() {
         super.onDestroy();
         chat.this.finish();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(checkBox.isChecked() == false){
+            transfer = "no";
+        }
+        else{
+            transfer = "yes";
+        }
     }
 }
