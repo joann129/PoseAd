@@ -96,6 +96,7 @@ public class SendToServer extends Activity {
                             fileOutStream.seek(0);
                             dout.writeUTF("2");
                             Thread.sleep(1500);
+                            dout.flush();
 //                            dout.writeUTF("game1;");
 //                            Log.e("no","face");
                             String bufSend = "facer;";
@@ -115,7 +116,7 @@ public class SendToServer extends Activity {
                                 Log.e("[Progress]", "* Start sending file *");
                                 DataOutputStream dpos = new DataOutputStream(pos);
                                 dpos.writeUTF("3");//傳圖片
-                                Log.e("serial",Serial);
+                                //Log.e("serial",Serial);
                                 while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
                                     baos.write(buffer, 0, bytesRead);
                                 }

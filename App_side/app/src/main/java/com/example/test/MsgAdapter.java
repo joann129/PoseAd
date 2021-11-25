@@ -14,12 +14,14 @@ import java.util.List;
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder>{
     private List<Msg> mMsgList;
     static class ViewHolder extends RecyclerView.ViewHolder{
+        View myView;
         LinearLayout leftLayout;
         LinearLayout rightLayout;
         TextView leftMsg;
         TextView rightMsg;
         public ViewHolder(View view){
             super(view);
+            myView = itemView;
             leftLayout = (LinearLayout) view.findViewById(R.id.left_layout);
             rightLayout = (LinearLayout) view.findViewById(R.id.right_layout);
             leftMsg = (TextView) view.findViewById(R.id.left_msg);
@@ -54,6 +56,6 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder>{
     }
     @Override
     public int getItemCount() {
-            return mMsgList.size();
+            return mMsgList.size(); //顯示的數目
     }
 }

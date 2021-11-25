@@ -7,36 +7,43 @@
 
     <LinearLayout
         android:id="@+id/left_layout"
-        android:layout_width="106dp"
-        android:layout_height="92dp"
-        android:layout_gravity="left"
+        android:layout_width="156dp"
 
+        android:layout_height="66dp"
+        android:layout_gravity="left"
+        android:background="@drawable/left"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/left_msg"
-            android:layout_width="86dp"
-            android:layout_height="68dp"
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@mipmap/left"
-            android:textColor="#fff" />
+
+            android:autoSizeTextType="uniform"
+            android:textColor="#000"
+            android:textSize="15dp" />
+        <!--            android:background="@mipmap/left"-->
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/right_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="61dp"
         android:layout_gravity="right"
-
+        android:background="@drawable/right"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/right_msg"
-            android:layout_width="72dp"
-            android:layout_height="57dp"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@drawable/right" />
+            android:autoSizeTextType="uniform"
+            android:textSize="15dp" />
+        <!--            android:background="@drawable/right" />-->
     </LinearLayout>
 </LinearLayout>

@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
-    static String serverIp ="192.168.50.21";
+    static String serverIp ="10.22.3.17";
     static int serverPort = 5050;
     static String act = "";
     static String file_intent = "";
@@ -110,9 +110,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         private  int[] icons = {
                 R.drawable.icon_info,
                 R.drawable.icon_ticket,
-                R.drawable.icon_photo,
+                R.drawable.icon_video,
+                R.drawable.icon_chat,
                 R.drawable.game_icon,
-                R.drawable.icon_chat
+                R.drawable.dance_icon
         };
         private Context mCoNtext;
 
@@ -177,6 +178,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 case 4:
                     icon.setImageResource(icons[4]);
                     break;
+                case 5:
+                    icon.setImageResource(icons[5]);
                 default:
                     break;
             }

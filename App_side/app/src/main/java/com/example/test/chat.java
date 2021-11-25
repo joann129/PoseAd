@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -12,8 +13,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,6 +34,9 @@ import java.util.List;
 
 public class chat extends Activity implements CompoundButton.OnCheckedChangeListener {
     private List<Msg> msgList = new ArrayList<>();
+    Msg revmsg;
+    ImageView image;
+    TextView name;
     Socket clientSocket;
     EditText chatContent;
     Button submit;
@@ -39,14 +46,20 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
     String content = "";
     RecyclerView recyclerView;
     CheckBox checkBox;
-    String transfer = "";
+    String type = SendToServer.type;
+    String transfer = "no";
+    int len;
+    byte[] bytes = new byte[1024];
     private MsgAdapter adapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("<PAGE>", "chat");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.passtxt);
+
         chatContent = (EditText)findViewById(R.id.chatContent);
+        image = (ImageView) findViewById(R.id.person);
+        name = (TextView) findViewById(R.id.name);
         submit = (Button) findViewById(R.id.submit);
         back = (Button) findViewById(R.id.back);
         recyclerView = (RecyclerView) findViewById(R.id.recycle) ;
@@ -54,15 +67,31 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
         recyclerView.setLayoutManager(layoutManager);
         checkBox = (CheckBox)findViewById(R.id.checkbox) ;
         checkBox.setOnCheckedChangeListener(this);
+        adapter = new MsgAdapter(msgList);
+        recyclerView.setAdapter(adapter);
+        chatContent.getBackground().setAlpha(240);
+        if("tzutu".equals(type)){
+            image.setImageDrawable(getResources().getDrawable(R.drawable.yu));
+            name.setText("子瑜\nTZUYU");
+        }else if("mina".equals(type)){
+            image.setImageDrawable(getResources().getDrawable(R.drawable.mina));
+            name.setText("MINA");
+        }else{
+            image.setImageDrawable(getResources().getDrawable(R.drawable.momo));
+            name.setText("MOMO");
+        }
+
         Thread t = new Thread(readData);
         t.start();
-
+//        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+//        recyclerView.scrollToPosition(msgList.size()-1);
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
 
                 if (clientSocket.isConnected()){
+
                     content = chatContent.getText().toString();
                     if(!"".equals(content)){
                         Msg msg = new Msg(content, Msg.TYPE_SENT);
@@ -75,27 +104,28 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 
                     try {
                         DataOutputStream dout = new DataOutputStream(clientSocket.getOutputStream());
-                        String txt = "chat;"+result+";"+content+";"+transfer;
-                        //dout.writeUTF("2");
-                        dout.writeUTF(txt);
-                        Log.e("[txt]",txt);
+                        if(!"".equals(content)) {
+                            String txt = "chat;" + content + ";" + transfer + ";" + result;
+                            //dout.writeUTF("2");
+                            dout.writeUTF(txt);
+                            Log.e("[txt]", txt);
 //                        clientSocket.getOutputStream().write("2".getBytes());
 //                        clientSocket.getOutputStream().write(txt.getBytes());
-                        //clientSocket.getOutputStream().write(chat.getBytes());
-                        chatContent.setText("");
+                            //clientSocket.getOutputStream().write(chat.getBytes());
+                            chatContent.setText("");
 
-                        AlertDialog.Builder chatSend = new AlertDialog.Builder(chat.this);
-                        chatSend.setTitle("Send");
-                        chatSend.setMessage(chatContent.getText().toString());
-                        chatSend.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                chatContent.setText("");
-                                dialog.dismiss();
-                            }
-                        });
-                        //chatSend.show();
-
+                            AlertDialog.Builder chatSend = new AlertDialog.Builder(chat.this);
+                            chatSend.setTitle("Send");
+                            chatSend.setMessage(chatContent.getText().toString());
+                            chatSend.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    chatContent.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+                            //chatSend.show();
+                        }
                     } catch (IOException ioe) {
                         Log.e("[Exception]", "IOException");
                         ioe.printStackTrace();
@@ -103,6 +133,9 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
                 }
 
             }
+
+
+
         });
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -119,21 +152,37 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
     private Runnable readData = new Runnable() {
         public void run() {
             try {
+
+
                 InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
                 clientSocket = new Socket(serverIp, MainActivity.serverPort);
-                DataInputStream br = new DataInputStream (clientSocket.getInputStream());
+                String txt = "chat;";
+                //DataInputStream br = new DataInputStream (clientSocket.getInputStream());
                 DataOutputStream d2 = new DataOutputStream(clientSocket.getOutputStream());
+                InputStream inputStream = clientSocket.getInputStream();
+                //StringBuilder sb = new StringBuilder();
                 d2.writeUTF("2");
-                while(clientSocket.isConnected()){
+                d2.writeUTF(txt);
+                while(clientSocket.isConnected() && (len = inputStream.read(bytes)) != -1){
 //                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
                     Log.e("read","in");
-                    bufRecv = br.readUTF();
+//                    bufRecv = br.readUTF();
+                    Thread.sleep(1500); //先做延遲再去接收，測試訊息來能否運作
+                    bufRecv = new String(bytes, 0, len, "UTF-8");
                     Log.e("[Buffread]",bufRecv);
-                    Msg revmsg = new Msg(bufRecv, Msg.TYPE_RECEIVED);
+                    revmsg = new Msg(bufRecv, Msg.TYPE_RECEIVED);
+//                    Log.e("[Buffread]","卡住");
                     msgList.add(revmsg);
                     adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
-                    recyclerView.scrollToPosition(msgList.size()-1);//將ListView定位到最後一行
+                    recyclerView.scrollToPosition(msgList.size()-1);
+//                    Log.e("[Buffread]","卡住");
+//
+
+                    //sb.append(new String(bytes, 0, len, "UTF-8"));
+
+                    //將ListView定位到最後一行
                 }
+                Log.e("[read]","out");
                 Thread.sleep(3000);
 
             }
