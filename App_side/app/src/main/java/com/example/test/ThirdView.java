@@ -5,12 +5,16 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -28,7 +32,9 @@ public class ThirdView extends Activity {
     Socket clientSocket;
     String bufRecv = "";
     String result = "";
-
+    String urlstring = "";
+    Button back;
+    ImageView info;
     int hLoad,hSize;
 
     ProgressDialog progressDialog;
@@ -50,7 +56,7 @@ public class ThirdView extends Activity {
                 bufsend = "ticket";
                 break;
             case "2":
-                bufsend = "photo";
+                bufsend = "video";
                 break;
             case "3":
                 bufsend = "game";
@@ -58,45 +64,85 @@ public class ThirdView extends Activity {
             case "4":
                 bufsend = "txt";
                 break;
+            case "5":
+                bufsend = "dance";
+                break;
             default:
                 break;
         }
         if(icon.equals("0")){
 //            info
-        }else if(icon.equals("3")){
-//            AlertDialog.Builder showCapture = new AlertDialog.Builder(this);
-//            showCapture.setTitle("GAME");
-//            showCapture.setPositiveButton("Start!",new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    if(clientSocket.isConnected()){
-//
-//                        Log.e("send","execute");
-//                        try {
-//                            DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());
-//                            dout.writeUTF("2");
-//                            dout.writeUTF("game1;");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }
-//            });
-//            showCapture.show();
+            setContentView(R.layout.activity_info);
+            info = (ImageView) findViewById(R.id.people_info);
+            back = (Button) findViewById(R.id.back);
+            if(type.equals("momo")){
+                info.setImageDrawable(getResources().getDrawable(R.drawable.momo_info));
+            }else if(type.equals("tzuyu")){
+                info.setImageDrawable(getResources().getDrawable(R.drawable.tzuyu_info));
+            }else if(type.equals("mina")){
+                info.setImageDrawable(getResources().getDrawable(R.drawable.mina_info));
+            }
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(ThirdView.this,MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+        }else if(icon.equals("1")){
+            urlstring = "https://www.twicejapan.com/feature/twicelights?lang=zh-tw";
+            Uri uri = Uri.parse(urlstring);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+        else if(icon.equals("3")){
+            Intent intent = new Intent();
+            intent.setClass(ThirdView.this,chat.class);
+            startActivity(intent);
+        }else if(icon.equals("4")){ //game
             Intent intent = new Intent();
             intent.setClass(ThirdView.this,GameView.class);
             startActivity(intent);
+        }else if(icon.equals("5")){ //dance
+            if(clientSocket.isConnected()){
+                try {
+                    Log.e("send","execute");
+                    DataOutputStream dout=new DataOutputStream(clientSocket.getOutputStream());
+                    dout.writeUTF("2");
+                    dout.writeUTF("game2;");
+                    Log.e("game","start");
+                    Thread.sleep(2000);
+                    if (bufRecv!= null){
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(ThirdView.this);
+                        dialog.setTitle("有人在玩，請稍後...");
+                        dialog.setNegativeButton("Try again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setClass(ThirdView.this,MainActivity.class);
+                                startActivity(intent);
+                                ThirdView.this.finish();
+                            }
+                        });
+                        dialog.show();
+                    }
 
-        }else if(icon.equals("4")){
-            Intent intent = new Intent();
-            intent.setClass(ThirdView.this,passtxt.class);
-            startActivity(intent);
+                    else{
+                        Intent intent = new Intent();
+                        intent.setClass(ThirdView.this,MainActivity.class);
+                        startActivity(intent);
+                        ThirdView.this.finish();
+                    }
+
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
-//            Intent intent = new Intent();
-//            intent.setClass(ThirdView.this,MainActivity.class);//txt
-//            startActivity(intent);
-//        }
 
     }
     private Handler handler = new Handler() {
@@ -119,7 +165,7 @@ public class ThirdView extends Activity {
                     if (hLoad == hSize) {
                         Log.e("[Download]","Finish");
                         Intent intent = new Intent();
-                        intent.setClass(ThirdView.this, FinalView.class);
+                        intent.setClass(ThirdView.this, MainActivity.class);
                         startActivity(intent);
                         //關閉畫面
                         ThirdView.this.finish();

@@ -33,6 +33,7 @@
         <activity android:name=".ThirdView" />
         <activity android:name=".GameView"/>
         <activity android:name=".passtxt"/>
+        <activity android:name=".chat"/>
 
     </application>
 

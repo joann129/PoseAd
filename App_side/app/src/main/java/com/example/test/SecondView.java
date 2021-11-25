@@ -27,35 +27,35 @@ public class SecondView extends Activity{
     int idcx,idcy;
     //String fileOriginal = "//MicroSD//DCIM//capture.jpg"; // 照片保存路徑
     //String fileTransfer = "//MicroSD//DCIM//captureFix.jpg"; // 照片保存路徑
-    public void recognize(String icon){
-
-        switch(icon){
-            case "0":
-                text = "info";
-                break;
-            case "1":
-                text = "ticket";
-                break;
-            case "2":
-                text = "photo";
-                break;
-            default:
-                break;
-        }
-        AlertDialog.Builder detectDialog = new AlertDialog.Builder(SecondView.this);
-        detectDialog.setTitle(text);
-        detectDialog.setNegativeButton("Try again", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent();
-                intent.setClass(SecondView.this, MainActivity.class);
-                startActivity(intent);
-                //關閉畫面
-                SecondView.this.finish();
-            }
-        });
-        detectDialog.show();
-    }
+//    public void recognize(String icon){
+//
+//        switch(icon){
+//            case "0":
+//                text = "info";
+//                break;
+//            case "1":
+//                text = "ticket";
+//                break;
+//            case "2":
+//                text = "photo";
+//                break;
+//            default:
+//                break;
+//        }
+//        AlertDialog.Builder detectDialog = new AlertDialog.Builder(SecondView.this);
+//        detectDialog.setTitle(text);
+//        detectDialog.setNegativeButton("Try again", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent();
+//                intent.setClass(SecondView.this, MainActivity.class);
+//                startActivity(intent);
+//                //關閉畫面
+//                SecondView.this.finish();
+//            }
+//        });
+//        detectDialog.show();
+//    }
 
     protected void onCreate(Bundle savedInstanceState) {
         Log.e("<PAGE>", "SecondView");

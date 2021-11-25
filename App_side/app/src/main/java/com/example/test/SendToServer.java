@@ -76,11 +76,12 @@ public class SendToServer extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 Message mes = new Message();
                 mes.what = 0;
-                handler.sendMessage(mes);
+
                 Log.e("handler","start");
                 if (clientSocket.isConnected()) {
                     if (new File(filename).exists()) { //當圖檔存在
                         try {
+                            handler.sendMessage(mes);
                             InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
                             picSocket = new Socket(serverIp, 5050);
                             byte[] buffer = new byte[1024*20];
@@ -95,6 +96,7 @@ public class SendToServer extends Activity {
                             fileOutStream.seek(0);
                             dout.writeUTF("2");
                             Thread.sleep(1500);
+                            dout.flush();
 //                            dout.writeUTF("game1;");
 //                            Log.e("no","face");
                             String bufSend = "facer;";
@@ -113,8 +115,8 @@ public class SendToServer extends Activity {
                             if (bufRecv != null && bufRecv.equals("StartSend")) {   /*當server傳送開始傳送的data時，開始傳送圖片*/
                                 Log.e("[Progress]", "* Start sending file *");
                                 DataOutputStream dpos = new DataOutputStream(pos);
-                                dpos.writeUTF("3");
-                                Log.e("serial",Serial);
+                                dpos.writeUTF("3");//傳圖片
+                                //Log.e("serial",Serial);
                                 while ((bytesRead = fis.read(buffer,0,buffer.length)) > 0) {
                                     baos.write(buffer, 0, bytesRead);
                                 }
@@ -232,6 +234,9 @@ public class SendToServer extends Activity {
                     }
                     else if(token[0].equals("index")){
                         Serial = token[1];
+                        Message mes = new Message();
+                        mes.what = 0;
+                        handler.sendMessage(mes);
                     }
                 }
                 Log.e("[Buffread]","no exit");

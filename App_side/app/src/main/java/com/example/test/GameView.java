@@ -1,6 +1,8 @@
 package com.example.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,7 +29,7 @@ import static android.content.ContentValues.TAG;
 
 public class GameView extends AppCompatActivity {
     private ViewPager viewPager;
-
+    String bufRecv = "";
     //三個view
     private View view1;
     private View view2;
@@ -95,19 +98,34 @@ public class GameView extends AppCompatActivity {
                         dout.writeUTF("game1;");
                         Log.e("game","start");
                         Thread.sleep(2000);
-                        Intent intent = new Intent();
-                        intent.setClass(GameView.this,MainActivity.class);
-                        startActivity(intent);
-                        GameView.this.finish();
+                        if (bufRecv!= null){
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(GameView.this);
+                            dialog.setTitle("有人在玩，請稍後...");
+                            dialog.setNegativeButton("Try again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent();
+                                    intent.setClass(GameView.this,MainActivity.class);
+                                    startActivity(intent);
+                                    GameView.this.finish();
+                                }
+                            });
+                            dialog.show();
+                        }
+
+                        else{
+                            Intent intent = new Intent();
+                            intent.setClass(GameView.this,MainActivity.class);
+                            startActivity(intent);
+                            GameView.this.finish();
+                        }
+
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
 
                 }
-                Intent intent = new Intent();
-                intent.setClass(GameView.this,MainActivity.class);
-                startActivity(intent);
-                GameView.this.finish();
+
             }
         });
     }
@@ -173,7 +191,14 @@ public class GameView extends AppCompatActivity {
             try {
                 InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);
                 clientSocket = new Socket(serverIp, MainActivity.serverPort);
+                DataInputStream din = new DataInputStream(clientSocket.getInputStream());
                 Thread.sleep(3000);
+                while(clientSocket.isConnected()){
+                    bufRecv = din.readUTF();
+                    Log.e("buffer",bufRecv);
+
+                }
+
             }
             catch (IOException ioe) {
                 Log.e("[Exception]", "IOException");
@@ -186,7 +211,7 @@ public class GameView extends AppCompatActivity {
     };
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "--- ThirdView(onDestroy)  ---");
+        Log.e(TAG, "--- Gameview(onDestroy)  ---");
         /*
         Intent intent = new Intent();
         intent.setClass(ThirdView.this, SendImage.class);
