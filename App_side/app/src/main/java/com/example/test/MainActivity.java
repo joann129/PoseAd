@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
-    static String serverIp ="10.22.3.17";
+    static String serverIp ="192.168.0.105";
     static int serverPort = 5050;
     static String act = "";
     static String file_intent = "";

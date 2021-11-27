@@ -76,11 +76,11 @@ public class ThirdView extends Activity {
             info = (ImageView) findViewById(R.id.people_info);
             back = (Button) findViewById(R.id.back);
             if(type.equals("momo")){
-                info.setImageDrawable(getResources().getDrawable(R.drawable.momo_info));
+                info.setBackground(getResources().getDrawable(R.drawable.momo_info));
             }else if(type.equals("tzuyu")){
-                info.setImageDrawable(getResources().getDrawable(R.drawable.tzuyu_info));
+                info.setBackground(getResources().getDrawable(R.drawable.tzuyu_info));
             }else if(type.equals("mina")){
-                info.setImageDrawable(getResources().getDrawable(R.drawable.mina_info));
+                info.setBackground(getResources().getDrawable(R.drawable.mina_info));
             }
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -204,11 +204,11 @@ public class ThirdView extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Log.e(TAG, "--- ThirdView(onDestroy)  ---");
-        /*
+
         Intent intent = new Intent();
-        intent.setClass(ThirdView.this, SendImage.class);
+        intent.setClass(ThirdView.this, MainActivity.class);
         startActivity(intent);
-        */
+
         ThirdView.this.finish();
     }
 }

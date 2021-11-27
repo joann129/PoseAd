@@ -19,7 +19,7 @@
             android:layout_width="136dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:layout_margin="18dp"
 
             android:autoSizeTextType="uniform"
             android:textColor="#000"
