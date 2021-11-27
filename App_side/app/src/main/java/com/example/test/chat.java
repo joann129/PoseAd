@@ -8,6 +8,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,6 +45,7 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
     String result = SendToServer.type;
     String bufRecv = "";
     String content = "";
+    int keyCode;
     RecyclerView recyclerView;
     CheckBox checkBox;
     String type = SendToServer.type;
@@ -83,8 +85,8 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 
         Thread t = new Thread(readData);
         t.start();
-        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
-        recyclerView.scrollToPosition(msgList.size()-1);
+//        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+//        recyclerView.scrollToPosition(msgList.size()-1);
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -164,6 +166,7 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
                 d2.writeUTF("2");
                 d2.writeUTF(txt);
                 while(clientSocket.isConnected() && (len = inputStream.read(bytes)) != -1){
+
 //                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
                     Log.e("read","in");
 //                    bufRecv = br.readUTF();
@@ -172,8 +175,10 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
                     Log.e("[Buffread]",bufRecv);
                     revmsg = new Msg(bufRecv, Msg.TYPE_RECEIVED);
 //                    Log.e("[Buffread]","卡住");
+                    //Thread.sleep(3000);
                     msgList.add(revmsg);
-                    Thread.sleep(1500); //先做延遲再去接收，測試訊息來能否運作
+                     //先做延遲再去接收，測試訊息來能否運作
+
 //                    adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
 //                    recyclerView.scrollToPosition(msgList.size()-1);
 //                    Log.e("[Buffread]","卡住");
