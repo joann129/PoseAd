@@ -83,7 +83,7 @@ public class SendToServer extends Activity {
                         try {
                             handler.sendMessage(mes);
                             InetAddress serverIp = InetAddress.getByName(MainActivity.serverIp);//圖片
-                            picSocket = new Socket(serverIp, 5050);
+                            picSocket = new Socket(serverIp, MainActivity.serverPort);
                             byte[] buffer = new byte[1024*20];
                             FileInputStream fis = new FileInputStream(f);
                             OutputStream os = clientSocket.getOutputStream();

@@ -150,8 +150,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="090909" />
-                                                <entry key="imagePath" value="D:\PoseAd\App_side\app\src\main\res\drawable\send.png" />
-                                                <entry key="paddingPercent" value="25" />
+                                                <entry key="imagePath" value="D:\PoseAd\App_side\app\src\main\res\drawable\momo.jpg" />
+                                                <entry key="paddingPercent" value="-5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -186,8 +186,8 @@
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="backgroundColor" value="cc373d" />
                                       <entry key="iconShape" value="CIRCLE" />
-                                      <entry key="imageAsset" value="D:\PoseAd\App_side\app\src\main\res\drawable\send.png" />
-                                      <entry key="outputName" value="send_icon" />
+                                      <entry key="imageAsset" value="D:\PoseAd\App_side\app\src\main\res\drawable\momo.jpg" />
+                                      <entry key="outputName" value="momo" />
                                     </map>
                                   </option>
                                 </PersistentState>

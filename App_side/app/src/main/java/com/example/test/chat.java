@@ -77,7 +77,7 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
             image.setImageDrawable(getResources().getDrawable(R.drawable.mina));
             name.setText("MINA");
         }else{
-            image.setImageDrawable(getResources().getDrawable(R.drawable.momo));
+            image.setImageDrawable(getResources().getDrawable(R.mipmap.momo));
             name.setText("MOMO");
         }
 
@@ -138,16 +138,16 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(chat.this, MainActivity.class);
-                startActivity(intent);
-                //關閉畫面
-                chat.this.finish();
-            }
-        });
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(chat.this, MainActivity.class);
+//                startActivity(intent);
+//                //關閉畫面
+//                chat.this.finish();
+//            }
+//        });
     }
     private Runnable readData = new Runnable() {
         public void run() {
@@ -167,12 +167,13 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 //                    DataInputStream br = new DataInputStream (clientSocket.getInputStream());
                     Log.e("read","in");
 //                    bufRecv = br.readUTF();
-                    Thread.sleep(1500); //先做延遲再去接收，測試訊息來能否運作
+
                     bufRecv = new String(bytes, 0, len, "UTF-8");
                     Log.e("[Buffread]",bufRecv);
                     revmsg = new Msg(bufRecv, Msg.TYPE_RECEIVED);
 //                    Log.e("[Buffread]","卡住");
                     msgList.add(revmsg);
+                    Thread.sleep(1500); //先做延遲再去接收，測試訊息來能否運作
                     adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
                     recyclerView.scrollToPosition(msgList.size()-1);
 //                    Log.e("[Buffread]","卡住");
