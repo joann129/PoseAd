@@ -25,11 +25,11 @@
 
         <ImageView
             android:id="@+id/person"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
 
             android:layout_marginStart="55dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="9dp"
             android:adjustViewBounds="false"
 
             android:clickable="false" />
@@ -38,7 +38,7 @@
             android:id="@+id/name"
             android:layout_width="180dp"
             android:layout_height="88dp"
-            android:layout_marginStart="-8dp"
+            android:layout_marginStart="-10dp"
             android:layout_marginTop="28dp"
             android:textSize="28dp"
             android:gravity="center"/>
@@ -65,7 +65,8 @@
 
     <EditText
         android:id="@+id/chatContent"
-        android:layout_width="320dp"
+
+        android:layout_width="305dp"
         android:layout_height="45dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="10dp"
@@ -96,7 +97,7 @@
 
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_x="305dp"
+        android:layout_x="295dp"
         android:layout_y="588dp"
         android:background="@mipmap/send_icon" />
 

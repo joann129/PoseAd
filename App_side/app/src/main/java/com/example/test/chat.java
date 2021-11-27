@@ -83,8 +83,8 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 
         Thread t = new Thread(readData);
         t.start();
-//        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
-//        recyclerView.scrollToPosition(msgList.size()-1);
+        adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+        recyclerView.scrollToPosition(msgList.size()-1);
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -174,8 +174,8 @@ public class chat extends Activity implements CompoundButton.OnCheckedChangeList
 //                    Log.e("[Buffread]","卡住");
                     msgList.add(revmsg);
                     Thread.sleep(1500); //先做延遲再去接收，測試訊息來能否運作
-                    adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
-                    recyclerView.scrollToPosition(msgList.size()-1);
+//                    adapter.notifyItemInserted(msgList.size()-1);//當有訊息時，重新整理ListView中的顯示
+//                    recyclerView.scrollToPosition(msgList.size()-1);
 //                    Log.e("[Buffread]","卡住");
 //
 
